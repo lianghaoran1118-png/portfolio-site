@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import Icon from './Icon.vue'
 import ImagePlaceholder from './ImagePlaceholder.vue'
 import CodeBlock from './CodeBlock.vue'
+import { ui } from '../i18n'
 
 const props = defineProps({
   project: { type: Object, required: true },
@@ -117,7 +118,7 @@ onBeforeUnmount(() => {
           class="relative overflow-hidden rounded-xl border border-slate-200 bg-white"
           :class="{ 'cursor-zoom-in': images[current].src }"
           @click="openLightbox"
-          :title="images[current].src ? '点击放大查看原图' : ''"
+          :title="images[current].src ? ui.clickToZoom : ''"
         >
           <ImagePlaceholder
             :key="current"
@@ -129,14 +130,14 @@ onBeforeUnmount(() => {
             <button
               @click.stop="prev"
               class="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-slate-700 shadow transition hover:bg-white"
-              aria-label="上一张"
+              :aria-label="ui.prevImage"
             >
               <Icon name="chevron-left" :size="18" />
             </button>
             <button
               @click.stop="next"
               class="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-slate-700 shadow transition hover:bg-white"
-              aria-label="下一张"
+              :aria-label="ui.nextImage"
             >
               <Icon name="chevron-right" :size="18" />
             </button>
@@ -150,12 +151,12 @@ onBeforeUnmount(() => {
                   'h-2 w-2 rounded-full transition',
                   current === i ? 'bg-blue-600' : 'bg-white/70 hover:bg-white',
                 ]"
-                :aria-label="`查看第 ${i + 1} 张`"
+                :aria-label="ui.viewImage + ' ' + (i + 1)"
               ></button>
             </div>
             <!-- 放大提示角标 -->
             <span class="absolute right-3 top-3 rounded bg-black/50 px-2 py-1 text-[10px] text-white">
-              点击放大
+              {{ ui.clickToZoom }}
             </span>
           </template>
         </div>
@@ -185,7 +186,7 @@ onBeforeUnmount(() => {
     <div class="mt-6 rounded-xl bg-slate-50 p-5">
       <h4 class="flex items-center gap-2 text-sm font-semibold text-slate-900">
         <Icon name="target" :size="18" class="text-blue-600" />
-        关键成果
+        {{ ui.keyResults }}
       </h4>
       <ul class="mt-3 space-y-2.5">
         <li
@@ -248,7 +249,7 @@ onBeforeUnmount(() => {
           <button
             @click="closeLightbox"
             class="rounded-full bg-white/10 p-2 transition hover:bg-white/20"
-            aria-label="关闭"
+            :aria-label="ui.close"
           >
             <Icon name="x" :size="20" />
           </button>
@@ -261,7 +262,7 @@ onBeforeUnmount(() => {
             v-if="isCarousel"
             @click="lbPrev"
             class="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition hover:bg-white/25"
-            aria-label="上一张"
+            :aria-label="ui.prevImage"
           >
             <Icon name="chevron-left" :size="28" />
           </button>
@@ -277,7 +278,7 @@ onBeforeUnmount(() => {
             v-if="isCarousel"
             @click="lbNext"
             class="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition hover:bg-white/25"
-            aria-label="下一张"
+            :aria-label="ui.nextImage"
           >
             <Icon name="chevron-right" :size="28" />
           </button>

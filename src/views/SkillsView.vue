@@ -1,27 +1,29 @@
 <script setup>
 import PageHeader from '../components/PageHeader.vue'
 import Icon from '../components/Icon.vue'
-import { skills } from '../data/content'
+import { useContent, ui } from '../i18n'
+
+const c = useContent()
 </script>
 
 <template>
   <div>
     <PageHeader
       kicker="Skills"
-      title="技能栈"
-      description="编程语言、工具框架与业务能力的组合，聚焦数据开发与 AI 应用方向。熟练度以项目实践为参考，可随经历更新。"
+      :title="ui.skillsTitle"
+      :description="ui.skillsDesc"
     />
 
     <section class="bg-slate-50 py-12 sm:py-16">
       <div class="mx-auto max-w-5xl space-y-8 px-4 sm:px-6">
-        <!-- 编程语言 -->
+        <!-- Programming languages -->
         <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
           <h3 class="flex items-center gap-2 text-lg font-bold text-slate-900">
             <Icon name="code" :size="22" class="text-blue-600" />
-            编程语言
+            {{ ui.programmingLanguages }}
           </h3>
           <div class="mt-6 space-y-6">
-            <div v-for="l in skills.languages" :key="l.name">
+            <div v-for="l in c.skills.languages" :key="l.name">
               <div class="flex items-center justify-between text-sm">
                 <span class="font-medium text-slate-800">{{ l.name }}</span>
                 <span class="text-slate-500">{{ l.level }}</span>
@@ -33,15 +35,15 @@ import { skills } from '../data/content'
           </div>
         </div>
 
-        <!-- 工具与框架 -->
+        <!-- Tools & frameworks -->
         <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
           <h3 class="flex items-center gap-2 text-lg font-bold text-slate-900">
             <Icon name="database" :size="22" class="text-blue-600" />
-            工具与框架
+            {{ ui.toolsFrameworks }}
           </h3>
           <div class="mt-5 flex flex-wrap gap-2">
             <span
-              v-for="t in skills.tools"
+              v-for="t in c.skills.tools"
               :key="t"
               class="rounded-lg bg-slate-100 px-3 py-1.5 text-sm text-slate-700"
             >
@@ -50,15 +52,15 @@ import { skills } from '../data/content'
           </div>
         </div>
 
-        <!-- 业务能力 -->
+        <!-- Business capabilities -->
         <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
           <h3 class="flex items-center gap-2 text-lg font-bold text-slate-900">
             <Icon name="sparkles" :size="22" class="text-blue-600" />
-            业务能力
+            {{ ui.businessCapabilities }}
           </h3>
           <div class="mt-5 grid gap-4 sm:grid-cols-2">
             <div
-              v-for="b in skills.business"
+              v-for="b in c.skills.business"
               :key="b.title"
               class="rounded-xl border border-slate-200 bg-slate-50 p-4"
             >

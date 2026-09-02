@@ -13,8 +13,8 @@ export const profile = {
   role: '商业分析硕士 · IT 数据开发实习生',
   tagline: '用数据与 AI 解决真实业务问题',
   intro:
-    '澳门大学商业分析硕士在读，兼具经济学、统计学与数据分析复合背景。曾于美赛斯 Maxcess（外企）参与应收账款管理看板（ARDashboard）全栈开发，具备 ERP 取数、MySQL 数据建模与 FastAPI/Vue 看板交付经验；曾在百度、兴业银行任数据分析实习生。熟练使用 SQL 与 Python/Pandas，掌握回归、分类等机器学习建模流程，能结合 AI 编程工具（CodeBuddy、Codex）辅助 SQL、ETL 与前后端开发。',
-  location: '江浙沪 · 珠海', // 意向地区
+    '澳门大学商业分析硕士在读，兼具经济学、统计学与数据分析复合背景。曾于美赛斯 Maxcess（外企）参与应收账款管理看板（ARDashboard）全栈开发，具备 ERP 取数、MySQL 数据建模与 FastAPI/Vue 看板交付经验；曾在百度、兴业银行任数据分析实习生。熟练使用 SQL 与 Python/Pandas，掌握回归、分类等机器学习建模流程；以 AI 产品思维运用 CodeBuddy、Codex 等工具，驱动需求拆解、Agent 协作工作流与提示词工程，用 AI 重构 SQL、ETL 与全栈开发交付链路，实现数倍提效。',
+  location: '江浙沪 · 成都', // 意向地区
   industries: ['银行', '外企'], // 意向行业
   email: 'Lianghaoran1118@163.com', // 邮箱（来自简历）
   phone: '15168693637', // 电话（来自简历）
@@ -23,7 +23,7 @@ export const profile = {
   resumeUrl: 'resume/resume.pdf', // 简历PDF路径（放在 public/resume/resume.pdf）
 }
 
-export const jobIntent = ['数据开发', '商业分析', '数据分析', 'AI 业务分析师', 'AI 产品经理']
+export const jobIntent = ['数据分析', '数据开发', '商业分析', 'AI 业务分析师', 'AI 产品经理']
 
 // ---------------- 项目作品集 ----------------
 export const projects = [

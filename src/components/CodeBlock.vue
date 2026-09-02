@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { ui } from '../i18n'
 
 defineProps({
   title: { type: String, required: true }, // 代码片段标题，如"核心系统提示词"
@@ -42,7 +43,7 @@ async function copy() {
         @click="copy"
         class="rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-600 transition hover:border-slate-400 hover:text-slate-900"
       >
-        {{ copied ? '已复制 ✓' : '复制' }}
+        {{ copied ? ui.copied + ' ✓' : ui.copy }}
       </button>
     </div>
     <!-- 代码内容 -->

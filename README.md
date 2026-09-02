@@ -2,15 +2,20 @@
 
 基于 **Vite + Vue 3 + TailwindCSS** 的纯静态个人作品集网站。无后端、无接口、无大模型调用，零多余第三方依赖，可直接部署到 **Vercel** 或 **GitHub Pages**。
 
+## 线上地址
+
+**https://lianghaoran1118-png.github.io/portfolio-site/**
+
+（部署于 GitHub Pages，push 到 `main` 分支后由 GitHub Actions 自动更新，约 1 分钟生效）
+
 ## 页面结构
 
 | 页面 | 说明 |
 | --- | --- |
 | 首页 `/` | Hero 介绍、求职意向、下载简历 PDF、项目精选、技能速览、联系 CTA |
-| 项目作品集 `/projects` | 4 个项目卡片：简介 / 技术栈 / 截图占位 / 关键成果 / 代码或提示词片段 |
+| 项目作品集 `/projects` | 项目卡片：简介 / 技术栈 / 截图轮播（点击放大）/ 关键成果 / 多段代码切换 |
 | 技能栈 `/skills` | 编程语言（熟练度）、工具框架、业务能力 |
-| 复盘博客 `/blog` | 3 篇占位文章卡片 |
-| 关于我 `/about` | 教育背景、实习经历、求职意向、联系方式 |
+| 关于我 `/about` | 教育背景、实习经历、荣誉奖项、求职意向、联系方式 |
 
 ## 目录结构
 
@@ -33,7 +38,7 @@ portfolio-site/
     ├── data/
     │   └── content.js          # ★ 全站内容配置（改这里即可换文字/项目/技能）
     ├── components/             # 导航、页脚、图标、代码块、截图占位、项目卡片等
-    └── views/                  # 5 个页面
+    └── views/                  # 4 个页面（首页/项目/技能/关于）
 ```
 
 ## 本地运行
@@ -73,7 +78,7 @@ npm run preview    # 本地预览构建产物
 
 ### 4. 替换简历 PDF
 直接覆盖 `public/resume/resume.pdf`（文件名保持不变即可），首页与导航的"下载简历"按钮会自动指向该文件。
-目前该文件是从你的 `简历/` 目录复制来的版本，建议换成针对秋招投递的更新版。
+目前该文件是从你的 `简历/` 目录复制来的版本，简历 docx/PDF 中已包含作品集线上链接，投递前请同步更新为最新版。
 
 ### 5. 调整主题色 / 字体
 打开 `src/style.css`，修改 `@theme` 中的变量即可全站生效（当前主色为深蓝 `blue-600/700`）。
@@ -100,9 +105,10 @@ vercel --prod   # 部署到生产环境
 1. 推送到 GitHub 仓库（分支名 `main`）
 2. 仓库 Settings → Pages → Source 选择 **GitHub Actions**
 3. 之后每次 `push` 到 `main` 都会自动构建并发布
-4. 访问 `https://<你的用户名>.github.io/<仓库名>/`（例如 `https://lhr.github.io/portfolio-site/`）
+4. 访问 `https://<你的用户名>.github.io/<仓库名>/`
 
-> 说明：`vite.config.js` 中 `base: './'` 已适配子路径部署，无需改动。若发布到 `https://<用户名>.github.io/`（用户名仓库根路径），也无需改动。
+> 当前项目实际地址：**https://lianghaoran1118-png.github.io/portfolio-site/**（已部署完成）
+> `vite.config.js` 中 `base: './'` 已适配子路径部署，无需改动。若发布到 `https://<用户名>.github.io/`（用户名仓库根路径），也无需改动。
 
 ### 方式 B：手动推送 dist
 ```bash
@@ -120,8 +126,8 @@ git add dist && git commit -m "deploy" && git push origin gh-pages
 **Q：更换姓名后浏览器标题没变？**
 `src/router.js` 中 `router.afterEach` 设置了固定标题，如姓名变化，把其中的"梁浩然"一并替换即可。`index.html` 的 `<title>` 同理。
 
-**Q：如何新增一个项目 / 博客？**
-在 `content.js` 的 `projects` / `blogs` 数组中追加一个对象即可，页面自动渲染。
+**Q：如何新增一个项目？**
+在 `content.js` 的 `projects` 数组中追加一个对象即可，页面自动渲染。
 
 ## 技术栈
 

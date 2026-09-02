@@ -1,14 +1,15 @@
 <script setup>
 import { ref } from 'vue'
 import Icon from './Icon.vue'
-import { profile } from '../data/content'
+import { useContent, lang, setLang, ui } from '../i18n'
 
+const c = useContent()
 const open = ref(false)
 const links = [
-  { to: '/', label: '首页' },
-  { to: '/projects', label: '项目作品集' },
-  { to: '/skills', label: '技能栈' },
-  { to: '/about', label: '关于我' },
+  { to: '/', key: 'navHome' },
+  { to: '/projects', key: 'navProjects' },
+  { to: '/skills', key: 'navSkills' },
+  { to: '/about', key: 'navAbout' },
 ]
 </script>
 
@@ -17,9 +18,7 @@ const links = [
     <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
       <!-- Logo -->
       <router-link to="/" class="flex items-center gap-2.5">
-        <span
-          class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 text-blue-400"
-        >
+        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 text-blue-400">
           <svg
             width="18"
             height="18"
@@ -34,7 +33,7 @@ const links = [
             <polyline points="8 6 2 12 8 18" />
           </svg>
         </span>
-        <span class="text-base font-semibold text-slate-900">{{ profile.name }}</span>
+        <span class="text-base font-semibold text-slate-900">{{ c.profile.name }}</span>
       </router-link>
 
       <!-- 桌面端导航 -->
@@ -46,26 +45,69 @@ const links = [
           class="rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition hover:text-slate-900"
           exact-active-class="!text-blue-600 !font-semibold"
         >
-          {{ l.label }}
+          {{ ui[l.key] }}
         </router-link>
+        <!-- 语言切换 -->
+        <div class="ml-3 inline-flex rounded-lg border border-slate-200 bg-slate-50 p-0.5">
+          <button
+            @click="setLang('zh')"
+            :class="[
+              'rounded-md px-2.5 py-1 text-xs font-medium transition',
+              lang === 'zh' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700',
+            ]"
+          >
+            中
+          </button>
+          <button
+            @click="setLang('en')"
+            :class="[
+              'rounded-md px-2.5 py-1 text-xs font-medium transition',
+              lang === 'en' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700',
+            ]"
+          >
+            EN
+          </button>
+        </div>
         <a
-          :href="profile.resumeUrl"
+          :href="c.profile.resumeUrl"
           download
           class="ml-3 inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
         >
           <Icon name="download" :size="16" />
-          下载简历
+          {{ ui.downloadResume }}
         </a>
       </div>
 
       <!-- 移动端菜单按钮 -->
-      <button
-        @click="open = !open"
-        class="rounded-md p-2 text-slate-600 transition hover:bg-slate-100 md:hidden"
-        :aria-label="open ? '关闭菜单' : '打开菜单'"
-      >
-        <Icon :name="open ? 'x' : 'menu'" :size="24" />
-      </button>
+      <div class="flex items-center gap-2 md:hidden">
+        <div class="inline-flex rounded-lg border border-slate-200 bg-slate-50 p-0.5">
+          <button
+            @click="setLang('zh')"
+            :class="[
+              'rounded-md px-2.5 py-1 text-xs font-medium transition',
+              lang === 'zh' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500',
+            ]"
+          >
+            中
+          </button>
+          <button
+            @click="setLang('en')"
+            :class="[
+              'rounded-md px-2.5 py-1 text-xs font-medium transition',
+              lang === 'en' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500',
+            ]"
+          >
+            EN
+          </button>
+        </div>
+        <button
+          @click="open = !open"
+          class="rounded-md p-2 text-slate-600 transition hover:bg-slate-100"
+          :aria-label="open ? 'close menu' : 'open menu'"
+        >
+          <Icon :name="open ? 'x' : 'menu'" :size="24" />
+        </button>
+      </div>
     </nav>
 
     <!-- 移动端菜单 -->
@@ -78,15 +120,15 @@ const links = [
         class="block rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
         exact-active-class="!text-blue-600 !font-semibold"
       >
-        {{ l.label }}
+        {{ ui[l.key] }}
       </router-link>
       <a
-        :href="profile.resumeUrl"
+        :href="c.profile.resumeUrl"
         download
         class="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
       >
         <Icon name="download" :size="16" />
-        下载简历
+        {{ ui.downloadResume }}
       </a>
     </div>
   </header>

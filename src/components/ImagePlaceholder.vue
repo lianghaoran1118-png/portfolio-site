@@ -1,12 +1,13 @@
 <script setup>
 import Icon from './Icon.vue'
+import { ui } from '../i18n'
 
 defineProps({
-  // 占位说明文字，例如"应收看板效果截图"
+  // 占位说明文字，例如"应收看板效果截图" / "AR dashboard screenshot"
   label: { type: String, required: true },
   // 真实截图路径：放入 public/images/ 后填写为 images/xxx.png，留空则显示占位框
   src: { type: String, default: '' },
-  alt: { type: String, default: '项目截图' },
+  alt: { type: String, default: 'screenshot' },
 })
 </script>
 
@@ -26,10 +27,9 @@ defineProps({
   >
     <div class="px-6 text-center">
       <Icon name="image" :size="40" class="mx-auto text-slate-400" />
-      <p class="mt-4 text-sm font-medium text-slate-500">{{ label }}占位</p>
-      <p class="mx-auto mt-1.5 max-w-xs text-xs leading-relaxed text-slate-400">
-        请将截图放入 public/images/ 并修改 content.js 中的 imageSrc
-      </p>
+      <p class="mt-4 text-sm font-medium text-slate-500">{{ ui.imagePlaceholder }}</p>
+      <p class="mx-auto mt-1.5 max-w-xs text-xs leading-relaxed text-slate-400">{{ label }}</p>
+      <p class="mx-auto mt-1.5 max-w-xs text-xs leading-relaxed text-slate-400">{{ ui.placeholderHint }}</p>
     </div>
   </div>
 </template>
