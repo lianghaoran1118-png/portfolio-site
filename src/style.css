@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+/* ============================================================
+   全局设计系统（简洁商务 · 技术向）
+   - 主色：深蓝 blue-600/700（专业、可信），深色区 slate-950
+   - 背景：白色 + slate-50 交替，衬托卡片层级
+   - 字体：系统字体栈（含中文 PingFang / 微软雅黑）
+   如需调整主色调，直接修改下方 @theme 变量即可全站生效
+   ============================================================ */
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue",
+    Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #ffffff;
+  color: #1e293b;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Hero 区技术网格纹理背景 */
+.tech-grid-bg {
+  background-image: linear-gradient(
+      rgba(148, 163, 184, 0.08) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* 代码块滚动条美化 */
+.code-scroll::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.code-scroll::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.5);
+  border-radius: 3px;
+}
+.code-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
