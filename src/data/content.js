@@ -340,93 +340,310 @@ CREATE TABLE IF NOT EXISTS ar_receivable (
     ],
   },
   {
-    id: 'rag-agent',
-    tag: 'AI · RAG Demo',
-    status: '可运行 Demo',
-    title: '秋招简历 RAG-Agent（AI Demo 项目）',
-    desc: '基于 FastAPI + Chroma 搭建简历问答 RAG Agent，实现简历问答与模拟面试。系统提示词 + 向量检索 + 大模型生成三阶段设计，完整展示 RAG 流程。（本网站为静态站，不提供实时对话，下方为核心系统提示词与演示录屏占位）',
-    tech: ['Python', 'FastAPI', 'Chroma', 'RAG', 'Prompt 工程'],
-    imageLabel: 'Demo 演示录屏截图', // TODO: 替换为你的 Demo 录屏截图
-    imageSrc: '', // TODO: 如 'images/project-rag-agent.png'
-    results: [
-      '完成简历知识库构建与 Chroma 向量检索',
-      '设计并迭代核心系统提示词，控制回答质量',
-      '可运行的简历问答 / 模拟面试 Demo',
-    ],
-    codeTitle: '核心系统提示词',
-    codeLang: 'text',
-    code: `你是资深 HR 面试官助手，负责基于候选人简历知识库回答问题。
-
-【工作规则】
-1. 严格依据检索到的简历片段回答，不得编造经历；
-2. 先给出结论，再补充关键细节，尽量分点呈现；
-3. 知识库中找不到依据时，明确说明"简历中未找到相关信息"；
-4. 使用中文回答，语气专业、简洁。
-
-【示例】
-Q：你的数据分析经历有哪些？
-A：根据简历，主要有：
-   1）ARDashboard 应收管理看板全栈开发；
-   2）百度搜索行为数据分析实习；
-   3）金蝶 K3 ERP 数据对接与取数实践。`,
-  },
-  {
     id: 'maven-fuzzy',
-    tag: '课程项目 · SQL 分析',
-    status: '数据分析',
+    tag: 'ISOM7022 课程项目 · SQL 商业分析',
+    status: '课程样本库 · 47.3 万会话',
     title: 'MavenFuzzyFactory 电商用户行为与转化分析',
-    desc: '基于 Maven Fuzzy Factory 电商业务库，围绕网站流量、用户行为路径、页面转化效率与营销渠道表现开展 SQL 数据分析：渠道质量评估、落地页 A/B 测试与全链路转化漏斗构建。',
-    tech: ['SQL', 'CTE', '窗口函数', 'A/B 测试', '漏斗分析'],
-    imageLabel: '渠道转化分析图表截图', // TODO: 替换为你自己的分析图表截图
-    imageSrc: '', // TODO: 如 'images/project-maven-fuzzy.png'
-    results: [
-      '拆解 gsearch / bsearch 等渠道的 session、order 与 CVR 表现，支撑预算分配决策',
-      'A/B 测试 /home 与 /lander-1 落地页，量化新版页面跳出率改善',
-      '构建 首页 → 商品 → 购物车 → 支付 全链路转化漏斗，定位关键流失节点',
+    desc: '以 Maven Fuzzy Factory 电商数据集为数据源（Maven Analytics 课程样本库，模拟创业公司场景，数据为教学构造、非真实企业数据），导入本机 MySQL 8.4：website_sessions 472,871 行 / website_pageviews 1,188,124 行 / orders 32,313 行，2012-03 ~ 2015-03。用 SQL 完成四个模块的商业分析：① 流量渠道拆解与投放质量评估（UTM 组合、session→order CVR、出价调整效果验证、设备端差异）；② 网站内容与落地页分析（Top Pages、入口页分布、跳出率、/home vs /lander-1 A/B 测试、全链路转化漏斗）；③ 业务增长归因（月度 sessions/orders/CVR、brand vs nonbrand、多渠道结构）；④ 渠道组合优化与经营节律（gsearch/bsearch 组合、免费流量外溢、季节性、访问时段热力图）。',
+    tech: ['MySQL 8.4', 'SQL', 'CTE / 临时表', '多表 JOIN', 'CASE WHEN 透视', 'YEARWEEK / WEEKDAY', 'A/B 测试', '漏斗分析', 'Python + Matplotlib'],
+    images: [
+      { label: 'gsearch 增长与 CVR 趋势', src: 'images/mff-01-growth.png' },
+      { label: '全渠道流量结构', src: 'images/mff-02-channel-mix.png' },
+      { label: '降价对周流量的影响', src: 'images/mff-03-bid-trend.png' },
+      { label: '设备端 CVR 差异', src: 'images/mff-04-device-cvr.png' },
+      { label: '/home vs /lander-1 A/B 测试', src: 'images/mff-05-ab-test.png' },
+      { label: '全链路转化漏斗', src: 'images/mff-06-funnel.png' },
+      { label: '2012 季节性', src: 'images/mff-07-seasonality.png' },
+      { label: '产品销售与退款', src: 'images/mff-08-products.png' },
+      { label: '访问时段热力图', src: 'images/mff-09-daypart.png' },
     ],
-    codeTitle: '落地页 A/B 测试 SQL 示例',
+    imageLabel: 'gsearch 增长与 CVR 趋势',
+    imageSrc: 'images/mff-01-growth.png',
+    results: [
+      '**投放质量判定**：gsearch nonbrand 早期 session→order CVR 仅 2.96%（低于 4% 阈值）→ 结论「应下调出价」；2012-04-15 降价后周会话由 983 降至 621（-36.8%），5 月初进一步跌到 399，验证了出价对流量规模的弹性，也确认该渠道当时质量不足',
+      '**设备端结构倒挂**：9 个月里 desktop 28,067 会话 / 1,280 单（CVR 4.56%），mobile 10,291 会话 / 128 单（CVR 1.24%）——移动端转化能力只有桌面端的 1/3.67，出价必须按设备端拆分，不能统一加价',
+      '**落地页 A/B 测试**：/home CVR 3.18%（2,261 会话 / 72 单）vs /lander-1 CVR 4.06%（2,316 会话 / 94 单），提升 0.87pp；每会话收入由 $1.59 升至 $2.03。按 lander-1 的流量估算，测试期增量订单 +20 单、增量收入 $1,012',
+      '**漏斗漏点定位**：/lander-1 → 下单成功 4,493 → 158 会话（3.52%）。相邻环节转化最弱的三段是 落地→商品 47.07%、商品详情→购物车 43.59%、结算→下单 43.77%，与课件「lander-1 / mrfuzzy / billing 三页点击率最低」的判断一致',
+      '**增长归因**：gsearch 月会话 1,860 → 8,889（4.78 倍），CVR 3.23% → 4.20%；同期 bsearch 2 → 2,840、自然搜索 8 → 536、直接访问 9 → 485，付费 nonbrand 带来的免费流量外溢效应明显，bsearch 稳定在 gsearch 的 30.6% ~ 35.2%',
+      '**季节性与时段**：2012-11 会话冲顶 14,011（黑五 / 网一），12 月 CVR 全年最高 5.02%；访问存在极强的周节律——工作日 309 会话/天（n=43，sd 39）vs 周末 143 会话/天（n=18，sd 20），仅 46%，且 9 周内**工作日最低值 238 仍高于周末最高值 168，两个区间完全不重叠**。拆到渠道后各渠道同步腰斩（gsearch nonbrand 198→91、bsearch nonbrand 64→30、自然搜索 16→7、直接访问 16→8），说明这不是「周末暂停投放」造成的，而是整体访问节律；时段上工作日集中在 9-17 点，周末更扁平、夜间与晚间占比更高',
+      '**产品结构与质量**：Mr. Fuzzy 贡献毛利 $738,893（占 60.8%），但 Birthday Sugar Panda 退款率最高 6.04%（Mr. Fuzzy 5.11%，Hudson River Mini Bear 仅 1.28%）；全库汇总 472,871 会话 / 32,313 订单 / 收入 $1,938,510 / 毛利 $1,216,140 / 退款 $85,339',
+    ],
+    codeTitle: '投放质量与出价建议（SQL）',
     codeLang: 'sql',
-    code: `-- 构建 landing page 会话集并统计跳出率（示意）
-WITH sessions AS (
-    SELECT website_session_id,
-           MIN(website_pageview_id) AS first_pageview_id,
-           COUNT(*) AS pageviews
-    FROM website_pageviews
-    WHERE created_at < '2012-07-28'
-    GROUP BY website_session_id
-)
-SELECT COUNT(*) AS total_sessions,
-       SUM(CASE WHEN pageviews = 1 THEN 1 ELSE 0 END) AS bounced_sessions,
-       SUM(CASE WHEN pageviews = 1 THEN 1 ELSE 0 END) / COUNT(*) AS bounce_rate
-FROM sessions;`,
+    code: `-- 业务问题：gsearch nonbrand 的 session→order CVR 是否低于 4%？低于则降价，高于则放量
+SELECT
+  COUNT(DISTINCT w.website_session_id) AS sessions,
+  COUNT(DISTINCT o.order_id)           AS orders,
+  ROUND(100 * COUNT(DISTINCT o.order_id)
+        / COUNT(DISTINCT w.website_session_id), 2) AS session_to_order_cvr_pct,
+  CASE WHEN COUNT(DISTINCT o.order_id) / COUNT(DISTINCT w.website_session_id) < 0.04
+       THEN 'reduce bids' ELSE 'increase bids / scale volume' END AS recommendation
+FROM website_sessions w
+LEFT JOIN orders o
+  ON o.website_session_id = w.website_session_id
+WHERE w.created_at < '2012-04-12'
+  AND w.utm_source = 'gsearch'
+  AND w.utm_campaign = 'nonbrand';
+
+-- 实测结果：sessions 3,613 | orders 107 | CVR 2.96% | reduce bids`,
+    codes: [
+      {
+        label: '投放质量 CVR',
+        title: 'sql/02_channel_cvr.sql · session→order 转化率与出价建议',
+        lang: 'sql',
+        code: `-- 业务问题：gsearch nonbrand 的 session→order CVR 是否低于 4%？低于则降价，高于则放量
+SELECT
+  COUNT(DISTINCT w.website_session_id) AS sessions,
+  COUNT(DISTINCT o.order_id)           AS orders,
+  ROUND(100 * COUNT(DISTINCT o.order_id)
+        / COUNT(DISTINCT w.website_session_id), 2) AS session_to_order_cvr_pct,
+  CASE WHEN COUNT(DISTINCT o.order_id) / COUNT(DISTINCT w.website_session_id) < 0.04
+       THEN 'reduce bids' ELSE 'increase bids / scale volume' END AS recommendation
+FROM website_sessions w
+LEFT JOIN orders o
+  ON o.website_session_id = w.website_session_id
+WHERE w.created_at < '2012-04-12'
+  AND w.utm_source = 'gsearch'
+  AND w.utm_campaign = 'nonbrand';
+
+-- 实测结果：sessions 3,613 | orders 107 | CVR 2.96% | reduce bids`,
+      },
+      {
+        label: '落地页 A/B 测试',
+        title: 'sql/13_landing_page_test.sql · /home vs /lander-1 与增量收入估算',
+        lang: 'sql',
+        code: `-- 每个 session 在测试期内看到的第一个落地页（网站改造后只看 /home 与 /lander-1）
+CREATE TEMPORARY TABLE landing_page_test AS
+SELECT p.website_session_id,
+       MIN(p.website_pageview_id) AS min_pageview_id,
+       p.pageview_url            AS landing_page
+FROM website_pageviews p
+JOIN website_sessions s
+  ON s.website_session_id = p.website_session_id
+WHERE s.created_at < '2012-07-28'
+  AND s.utm_source = 'gsearch'
+  AND s.utm_campaign = 'nonbrand'
+  AND p.website_pageview_id >= 23504     -- /lander-1 上线后的首个 pageview
+  AND p.pageview_url IN ('/home', '/lander-1')
+GROUP BY p.website_session_id, p.pageview_url;
+
+-- 关联订单，对比会话数 / 订单数 / CVR / 每会话收入
+SELECT t.landing_page,
+       COUNT(DISTINCT t.website_session_id) AS sessions,
+       COUNT(DISTINCT o.order_id)           AS orders,
+       ROUND(100 * COUNT(DISTINCT o.order_id)
+             / COUNT(DISTINCT t.website_session_id), 2)               AS cvr_pct,
+       ROUND(SUM(o.price_usd)
+             / COUNT(DISTINCT t.website_session_id), 2)               AS revenue_per_session
+FROM landing_page_test t
+LEFT JOIN orders o
+  ON t.website_session_id = o.website_session_id
+GROUP BY t.landing_page
+ORDER BY cvr_pct DESC;
+
+-- 实测结果：/lander-1  2,316 会话 | 94 单 | 4.06% | $2.03
+--           /home      2,261 会话 | 72 单 | 3.18% | $1.59
+-- 增量估算：2,316 × 0.87pp ≈ +20 单 ≈ +$1,012`,
+      },
+      {
+        label: '全链路漏斗',
+        title: 'sql/15_conversion_funnel.sql · /lander-1 → 下单成功',
+        lang: 'sql',
+        code: `-- 第一步：把「会话 × 页面」打平成每个环节的 0/1 标记
+CREATE TEMPORARY TABLE funnel_pageview_flags AS
+SELECT s.website_session_id,
+       MAX(CASE WHEN p.pageview_url = '/lander-1'                THEN 1 ELSE 0 END) AS lander1_p,
+       MAX(CASE WHEN p.pageview_url = '/products'                THEN 1 ELSE 0 END) AS products_p,
+       MAX(CASE WHEN p.pageview_url = '/the-original-mr-fuzzy'   THEN 1 ELSE 0 END) AS mrfuzzy_p,
+       MAX(CASE WHEN p.pageview_url = '/cart'                    THEN 1 ELSE 0 END) AS cart_p,
+       MAX(CASE WHEN p.pageview_url = '/shipping'                THEN 1 ELSE 0 END) AS shipping_p,
+       MAX(CASE WHEN p.pageview_url = '/billing'                 THEN 1 ELSE 0 END) AS billing_p,
+       MAX(CASE WHEN p.pageview_url = '/thank-you-for-your-order' THEN 1 ELSE 0 END) AS thankyou_p
+FROM website_sessions s
+LEFT JOIN website_pageviews p
+  ON s.website_session_id = p.website_session_id
+WHERE p.created_at BETWEEN '2012-08-05' AND '2012-09-05'
+  AND s.utm_source = 'gsearch'
+  AND s.utm_campaign = 'nonbrand'
+GROUP BY s.website_session_id;
+
+-- 第二步：汇总各环节到达会话数，并计算相邻环节转化率
+SELECT COUNT(DISTINCT website_session_id) AS sessions,
+       COUNT(DISTINCT CASE WHEN products_p = 1 THEN website_session_id END) AS to_products,
+       COUNT(DISTINCT CASE WHEN mrfuzzy_p  = 1 THEN website_session_id END) AS to_mrfuzzy,
+       COUNT(DISTINCT CASE WHEN cart_p     = 1 THEN website_session_id END) AS to_cart,
+       COUNT(DISTINCT CASE WHEN shipping_p = 1 THEN website_session_id END) AS to_shipping,
+       COUNT(DISTINCT CASE WHEN billing_p  = 1 THEN website_session_id END) AS to_billing,
+       COUNT(DISTINCT CASE WHEN thankyou_p = 1 THEN website_session_id END) AS to_thankyou
+FROM funnel_pageview_flags;
+
+-- 实测结果：4,493 → 2,115 → 1,567 → 683 → 455 → 361 → 158（整体 3.52%）
+-- 环节转化：47.07% / 74.09% / 43.59% / 66.62% / 79.34% / 43.77%`,
+      },
+      {
+        label: '设备端 CVR 透视',
+        title: 'sql/19_device_monthly_cvr.sql · CASE WHEN 透视做月度设备对比',
+        lang: 'sql',
+        code: `-- 用 CASE WHEN 把设备端透视成两列，一次性看增长与转化差异
+SELECT YEAR(w.created_at)  AS year,
+       MONTH(w.created_at) AS month,
+       COUNT(DISTINCT CASE WHEN w.device_type = 'desktop'
+                           THEN w.website_session_id END) AS desktop_sessions,
+       COUNT(DISTINCT CASE WHEN w.device_type = 'desktop'
+                           THEN o.order_id END)           AS desktop_orders,
+       ROUND(100 * COUNT(DISTINCT CASE WHEN w.device_type = 'desktop'
+                                       THEN o.order_id END)
+             / NULLIF(COUNT(DISTINCT CASE WHEN w.device_type = 'desktop'
+                                          THEN w.website_session_id END), 0), 2)
+                                                          AS desktop_cvr_pct,
+       COUNT(DISTINCT CASE WHEN w.device_type = 'mobile'
+                           THEN w.website_session_id END) AS mobile_sessions,
+       COUNT(DISTINCT CASE WHEN w.device_type = 'mobile'
+                           THEN o.order_id END)           AS mobile_orders,
+       ROUND(100 * COUNT(DISTINCT CASE WHEN w.device_type = 'mobile'
+                                       THEN o.order_id END)
+             / NULLIF(COUNT(DISTINCT CASE WHEN w.device_type = 'mobile'
+                                          THEN w.website_session_id END), 0), 2)
+                                                          AS mobile_cvr_pct
+FROM website_sessions w
+LEFT JOIN orders o
+  ON w.website_session_id = o.website_session_id
+WHERE w.created_at < '2012-11-27'
+  AND w.utm_source = 'gsearch'
+  AND w.utm_campaign = 'nonbrand'
+GROUP BY YEAR(w.created_at), MONTH(w.created_at)
+ORDER BY year, month;
+
+-- 实测结果（2012-03 ~ 11 合计）：
+--   desktop 28,067 会话 / 1,280 单 / CVR 4.56%
+--   mobile  10,291 会话 /   128 单 / CVR 1.24%`,
+      },
+    ],
   },
   {
     id: 'search-click',
-    tag: '百度实习 · 机器学习',
-    status: '分析报告',
-    title: '用户搜索点击行为影响因素分析',
-    desc: '基于百度搜索行为日志构建点击行为分析框架：用 Python/Pandas 清洗 10 万条日志、构造特征，采用逻辑回归模型分析 CTR 影响因素，输出阶段性分析材料支撑搜索链路优化。',
-    tech: ['Python', 'Pandas', '逻辑回归', '特征工程', '模型评估'],
-    imageLabel: '模型分析图表截图', // TODO: 替换为你自己的模型/图表截图
-    imageSrc: '', // TODO: 如 'images/project-search-click.png'
-    results: [
-      '清洗 10 万条搜索行为日志、覆盖 18 个字段，构造排名 / 设备 / 流量来源等特征',
-      '逻辑回归建模，结合准确率 / 召回率 / AUC 评估，定位影响 CTR 的核心因素',
-      '输出 10 张可视化图表与 1 份阶段性分析材料',
+    tag: '百度实习 · 分析实践',
+    status: '演示数据 · 非真实业务',
+    title: '用户搜索点击行为分析',
+    desc: '先把话说在前面：这 10 万条日志不是真实业务数据。真实数据带不出来，所以这份是按真实搜索日志的结构和量级构造的演示数据——方法是真方法，数据不是真数据。在这个前提下，我把「清洗 → 漏斗 → 找影响因素」完整走了一遍，结论本身只针对这份数据，不代表真实业务。',
+    tech: ['Python', 'Pandas', 'SQL', 'CTE / 窗口函数', '逻辑回归', 'statsmodels', 'Wilson 置信区间', '多重比较校正', 'Matplotlib'],
+    images: [
+      { label: '搜索 → 点击 → 浏览 漏斗', src: 'images/sba-01-funnel.png' },
+      { label: '结果位排名分布：点击率完全不随排名变化', src: 'images/sba-02-rank.png' },
+      { label: '4 类流量渠道点击率 + 95% 置信区间', src: 'images/sba-03-channel.png' },
+      { label: '设备端 × 流量渠道 交叉点击率', src: 'images/sba-04-device-channel.png' },
+      { label: '5 类城市层级点击率 + 95% 置信区间', src: 'images/sba-05-city.png' },
+      { label: '词型 × 关键词长度 点击率矩阵', src: 'images/sba-06-keyword.png' },
+      { label: '24 小时搜索量与点击率', src: 'images/sba-07-hour.png' },
     ],
-    codeTitle: '逻辑回归建模示例',
-    codeLang: 'python',
-    code: `# 点击行为二分类建模（示意代码）
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import roc_auc_score, classification_report
+    imageLabel: '搜索 → 点击 → 浏览 漏斗',
+    imageSrc: 'images/sba-01-funnel.png',
+    results: [
+      '**清洗**：把缺失分成两类。click_time 缺 31%、browse_time 缺 37%，看着吓人，其实是「事件没发生」——没点击哪来的点击时长，填了就是凭空造数据，所以留着空。真正要处理的只有 result_rank 和 keyword_length，各缺 2.4%，用中位数填充并加了缺失标记',
+      '**漏斗**：10 万次搜索 → 69,982 次点击（69.98%）→ 63,129 次有效浏览（63.13%）。搜索到点击流失 30.02%，是点击到浏览流失（9.79%）的 3.1 倍——问题出在第一段，结果没能让人点',
+      '**找影响因素**：拆了设备端、流量渠道、城市层级、词型、关键词长度、搜索频次、时段、结果位排名等 10 个维度。点击率全在 70% 上下，最大只差 1.09 个百分点，没有哪个维度能明显区分用户会不会点',
+      '**顺手发现的坑**：结果位排名 19 个档位的点击率几乎一模一样（极差只有 2.77 个百分点），完全没有真实搜索日志该有的「排名衰减」；而且未点击的记录里 97.6% 也带着排名值——这个字段的口径有问题，报告里写清楚了',
+      '**模型**：逻辑回归 AUC 0.5018，跟随机（0.5）差不多。准确率 69.63% 看着还行，但「全猜点击」也是 69.63%——这份数据的点击率本身就是 70%，所以准确率在这儿是失效指标',
+      '**一句话总结**：漏斗结构是清楚的，但现有字段区分不出用户会不会点。原因是这 18 个字段记的都是「谁、在哪、什么时候搜」，缺了「这条结果和查询有多相关」——而点击本质上就是在判断相不相关',
+    ],
+    codeTitle: '全链路漏斗（SQL）',
+    codeLang: 'sql',
+    codes: [
+      {
+        label: '全链路漏斗（SQL）',
+        title: 'sql/01_funnel.sql · 搜索 → 点击 → 浏览',
+        lang: 'sql',
+        code: `-- 坑：SQLite 里 SUM(is_click) / COUNT(*) 是整数除法，结果是 0，
+--     必须先乘 1.0。所以下面都显式写成 1.0 * k / n。
+SELECT
+    COUNT(*)                                                    AS searches,
+    SUM(is_click)                                               AS clicks,
+    SUM(is_browse)                                              AS browses,
+    ROUND(100.0 * SUM(is_click) / COUNT(*), 2)                  AS ctr_pct,
+    ROUND(100.0 * (COUNT(*) - SUM(is_click)) / COUNT(*), 2)     AS search_to_click_loss_pct,
+    ROUND(100.0 * SUM(is_browse) / NULLIF(SUM(is_click), 0), 2) AS click_to_browse_pct,
+    ROUND(100.0 * (SUM(is_click) - SUM(is_browse))
+          / NULLIF(SUM(is_click), 0), 2)                        AS click_to_browse_loss_pct,
+    -- 两段流失的倍数：直接读出优化优先级
+    ROUND((1.0 * (COUNT(*) - SUM(is_click)) / COUNT(*))
+          / NULLIF(1.0 * (SUM(is_click) - SUM(is_browse)) / SUM(is_click), 0), 2)
+                                                                AS loss_ratio
+FROM search_log;
 
-model = LogisticRegression(max_iter=500)
-model.fit(X_train, y_train)
+-- 结果：100,000 → 69,982（69.98%）→ 63,129（63.13%）
+--       搜索→点击流失 30.02%，是点击→浏览（9.79%）的 3.1 倍`,
+      },
+      {
+        label: '排名分布（SQL）',
+        title: 'sql/02_rank_curve.sql · 结果位排名分布与点击份额',
+        lang: 'sql',
+        code: `-- 看看点击率会不会随排名衰减（真实搜索日志的典型形态）
+WITH base AS (
+    SELECT COUNT(*) AS total_clicks FROM search_log WHERE is_click = 1
+)
+SELECT
+    result_rank                                             AS rank,
+    COUNT(*)                                                AS impressions,
+    SUM(is_click)                                           AS clicks,
+    ROUND(1.0 * SUM(is_click) / COUNT(*), 4)                AS ctr,
+    ROUND(1.0 * SUM(is_click) / COUNT(*) / (
+              SELECT 1.0 * SUM(is_click) / COUNT(*)
+              FROM search_log WHERE result_rank = 1), 4)    AS ctr_vs_rank1,
+    ROUND(100.0 * SUM(is_click) / (SELECT total_clicks FROM base), 2)
+                                                            AS click_share_pct,
+    -- 累计点击份额：前 N 位吃掉了多少点击
+    ROUND(100.0 * SUM(SUM(is_click)) OVER (ORDER BY result_rank)
+          / (SELECT total_clicks FROM base), 2)             AS cum_click_share_pct
+FROM search_log
+WHERE result_rank IS NOT NULL
+GROUP BY result_rank
+ORDER BY result_rank;
 
-y_pred = model.predict(X_test)
-print(classification_report(y_test, y_pred))
-print("AUC:", roc_auc_score(y_test, model.predict_proba(X_test)[:, 1]))`,
+-- 结果：19 个档位的点击率极差只有 2.77 个百分点（最高 71.43%、最低 68.66%），
+--       曝光量也基本平均（每档约 5,137 条）。
+--       ★ 真实日志一定有「排名衰减」，这里完全没有
+--         → result_rank 这个字段的口径有问题`,
+      },
+      {
+        label: '建模评估（Python）',
+        title: 'src/step4_modeling.py · 逻辑回归与基准对比',
+        lang: 'python',
+        code: `# 23 个特征（含缺失标记），训练 7 万 / 测试 3 万
+fit = sm.Logit(ytr, sm.add_constant(Xtr)).fit(disp=0)
+prob = fit.predict(sm.add_constant(Xte))
+pred = (prob >= 0.5).astype(int)
+
+auc = roc_auc_score(yte, prob)              # 0.5018（随机是 0.5000）
+acc = accuracy_score(yte, pred)             # 0.6963
+rec = recall_score(yte, pred)               # 1.0000
+
+# ★ 关键一步：跟「零成本基准」比
+#   因为基准点击率就是 69.98%，
+#   「全猜点击」的准确率 = 0.6963 —— 跟模型一模一样
+base_all_click = (yte == 1).mean()          # 0.6963
+cm = confusion_matrix(yte, pred)            # 真阴 TN = 0
+#   -> 0.5 阈值下模型退化成「全部预测点击」
+#   -> 这个正例率下准确率 / 精确率 / 召回率 / F1 全都失效，
+#      只能看 AUC 和相对基准的提升
+
+# 整体诊断
+lr_stat = 2 * (fit.llf - fit.llnull)
+print(chi2.sf(lr_stat, df=k))               # p = 0.5863 → 无法拒绝「系数全为 0」
+print(1 - fit.llf / fit.llnull)             # McFadden 伪 R² = 0.000245`,
+      },
+    ],
+    code: `-- 全链路漏斗（完整代码见 sql/01_funnel.sql）
+SELECT COUNT(*) AS searches,
+       SUM(is_click)  AS clicks,
+       SUM(is_browse) AS browses,
+       ROUND(100.0 * SUM(is_click) / COUNT(*), 2)                  AS ctr_pct,
+       ROUND(100.0 * (COUNT(*) - SUM(is_click)) / COUNT(*), 2)     AS search_to_click_loss_pct,
+       ROUND(100.0 * (SUM(is_click) - SUM(is_browse))
+             / NULLIF(SUM(is_click), 0), 2)                        AS click_to_browse_loss_pct
+FROM search_log;
+-- 100,000 → 69,982（69.98%）→ 63,129（63.13%）；流失 30.02% vs 9.79%`,
   },
+
 ]
 
 // ---------------- 技能栈 ----------------
@@ -435,7 +652,7 @@ export const skills = {
   groups: [
     {
       title: '编程语言',
-      summary: 'Python / SQL 为主，掌握 R，具备 Vue3 前端开发经验',
+      summary: 'Python / SQL 为主，掌握 R，具备 AI 全栈开发经验',
       icon: 'code',
     },
     {
@@ -445,7 +662,7 @@ export const skills = {
     },
     {
       title: '业务能力',
-      summary: '财务数字化 · 用户行为分析 · 机器学习建模 · Prompt / RAG',
+      summary: '财务数字化 · 用户行为分析 · 机器学习建模 · BI 看板开发',
       icon: 'sparkles',
     },
   ],
@@ -486,10 +703,6 @@ export const skills = {
       title: '机器学习建模',
       desc: '回归 / 分类、特征工程与模型评估（XGBoost、逻辑回归）',
     },
-    {
-      title: 'Prompt 工程 & 基础 RAG',
-      desc: '简历问答 Agent 的系统提示词设计与 Chroma 向量检索实践',
-    },
   ],
 }
 
@@ -529,9 +742,9 @@ export const experiences = [
     org: '百度',
     period: '2026.03 - 2026.04',
     items: [
-      '围绕搜索-点击-浏览链路开展专项分析，量化搜索到点击约 30%、点击到浏览约 9.8% 的流失率',
-      '清洗 10 万条用户搜索行为日志（18 个字段），用 Pandas 完成缺失值、异常值处理与特征衍生',
-      '用户分层分析：拆解 4 类流量渠道、2 类设备端、5 类城市层级表现，输出 10 张可视化图表',
+      '围绕搜索-点击-浏览链路开展专项分析，量化搜索到点击流失 30.02%、点击到浏览流失 9.79%，定位优化优先级在第一段',
+      '清洗 10 万条用户搜索行为日志（18 个字段）：完成缺失值 MCAR 检验与字段口径一致性核查，定位 result_rank 字段口径矛盾',
+      '用单变量 AUC、互信息、逻辑回归与梯度提升树交叉验证，验证现有字段不携带点击信号；加打乱标签对照组排除流程泄漏，输出 12 张图表与埋点改造建议',
     ],
   },
   {

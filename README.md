@@ -118,6 +118,58 @@ git add dist && git commit -m "deploy" && git push origin gh-pages
 ```
 （仓库 Settings → Pages → Source 选择 gh-pages 分支）
 
+## 配套分析工程
+
+项目页里的图表与代码都来自同级的可复现分析工程：
+
+```
+个人网站/
+├── maven-fuzzy-analysis/      ★ MavenFuzzyFactory 电商分析（Maven Analytics 课程样本库）
+├── search-behavior-analysis/  ★ 用户搜索点击行为分析（真实日志）
+├── simulation/                  仿真研究（参数复原方向，当前未在项目页展示）
+├── analysis/                    早期版本：信号体检（零结果分析）
+└── portfolio-site/              本站
+```
+
+### MavenFuzzyFactory 项目（`../maven-fuzzy-analysis/`）
+
+数据源是 Maven Analytics 课程样本库 `mavenfuzzyfactory`（本机 MySQL 导入，非真实企业数据；47.3 万会话 / 118.8 万页面浏览 /
+3.2 万订单），覆盖 ISOM7022 课件 Section 6–9 的 28 段 SQL 分析。
+
+- `maven-fuzzy-analysis/README.md` — 数据字典、四个分析模块与核心结论
+- `maven-fuzzy-analysis/sql/maven_fuzzy_factory_analysis.sql` — 28 段分析 SQL
+- `maven-fuzzy-analysis/run_all.py` — 连 MySQL 跑完全部 SQL（凭据从 `MYSQL_PWD` 读取）
+- `maven-fuzzy-analysis/make_web_images.py` — 导出 9 张 16:9 图表素材
+- `maven-fuzzy-analysis/outputs/` — `results.json` + 9 张原图
+
+```bash
+cd ../maven-fuzzy-analysis
+MYSQL_PWD='<你的 MySQL 密码>' python3 run_all.py
+python3 make_web_images.py    # 导出 public/images/mff-*.png
+```
+
+### 用户搜索点击行为项目（`../search-behavior-analysis/`）
+
+- `search-behavior-analysis/REPORT.md` — 完整分析报告
+- `search-behavior-analysis/面试讲稿.md` — 10 分钟讲稿 + 12 个高频追问 Q&A
+- `search-behavior-analysis/run_all.py` — 一键复现全部结论（约 8 秒）
+- `search-behavior-analysis/outputs/charts/` — 10 张原图
+
+### 重新生成项目页的图表素材
+
+网站卡片以 `aspect-[16/9] object-cover` 渲染图片，而分析图表宽高比跨度较大
+（1.5 ~ 3.0），直接使用会被裁掉内容。因此需要先跑一次导出脚本，
+把图表居中放到 16:9 白色画布上：
+
+```bash
+cd ../search-behavior-analysis
+python3 run_all.py            # 重新生成 10 张图表
+python3 make_web_images.py    # 导出 16:9 版本到 public/images/
+```
+
+导出后会自动写入 `public/images/sba-*.png`（MavenFuzzyFactory 项目则为 `mff-*.png`），
+`content.js` 与 `en.js` 中的 `images` 数组已指向这些文件，无需手动改名。
+
 ## 常见问题
 
 **Q：为什么用 Hash 路由（URL 带 #）？**
